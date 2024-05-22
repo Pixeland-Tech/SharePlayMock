@@ -1,0 +1,15 @@
+{
+  "originHash" : "0236c366789ffa39e333f2c8d88d6a3cebffcdd332b1f4896d195a320208258d",
+  "pins" : [
+    {
+      "identity" : "starscream",
+      "kind" : "remoteSourceControl",
+      "location" : "https://gitee.com/nikopeng/Starscream",
+      "state" : {
+        "revision" : "c6bfd1af48efcc9a9ad203665db12375ba6b145a",
+        "version" : "4.0.8"
+      }
+    }
+  ],
+  "version" : 3
+}
