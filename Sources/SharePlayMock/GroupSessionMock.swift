@@ -134,6 +134,13 @@ extension GroupSessionMock {
                     let session = await iterator.next()
                     return GroupSessionMock(session: session!)
                 } else {
+                    if let mock = SharePlayMockManager.useMock() {
+                        let identifier = ActivityType.activityIdentifier
+                        let sessionId = current?.id.uuidString
+                        let command = Command.querySession(identifier: identifier, sessionId: sessionId)
+                        mock.webSocket?.send(command)
+                    }
+                    
                     while elements.isEmpty {
                         do {
                             try await Task.sleep(nanoseconds: 1_00_000_000)

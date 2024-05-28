@@ -28,8 +28,8 @@ public class SharePlayMockManager: ObservableObject {
         return instance
     }
     
-    public static func enable(useMultipeerConnectivity: Bool = false) {
-        instance.setEnabled(useMultipeerConnectivity)
+    public static func enable(webSocketUrl: String?) {
+        instance.setEnabled(webSocketUrl: webSocketUrl)
     }
     
     static func useMock() -> SharePlayMockManager? {
@@ -40,20 +40,19 @@ public class SharePlayMockManager: ObservableObject {
         }
     }
     
-    private func setEnabled(_ useMultipeerConnectivity: Bool) {
+    private func setEnabled(webSocketUrl: String?) {
         self.enabled = true
-        self.useMultipeerConnectivity = useMultipeerConnectivity
         
         groupStateObservers.forEach { item in
             item.setMock()
         }
         
-        if useMultipeerConnectivity {
-            
+        if let url = webSocketUrl {
+            self.webSocket = WebSocketConnection(url)
+            webSocket?.connect()
         }
         else {
-            self.webSocket = WebSocketConnection()
-            webSocket?.connect()
+            self.useMultipeerConnectivity = true
         }
     }
 }

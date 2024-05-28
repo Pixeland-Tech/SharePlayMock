@@ -57,6 +57,10 @@ extension GroupActivityMock {
 @available(iOS 15, macOS 12, tvOS 15, *)
 extension GroupActivityMock {
     func onSessionDetected(_ sessionId: UUID) {
+        if Self.sessions().current?.id == sessionId {
+            return
+        }
+        
         let session = GroupSessionMock<Self>(mockActivity: self, sessionId: sessionId)
         Self.sessions().add(session)
     }

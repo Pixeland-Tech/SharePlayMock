@@ -11,12 +11,9 @@ import Starscream
 @available(iOS 15, macOS 12, tvOS 15, *)
 class WebSocketConnection: WebSocketDelegate {
     
-    private static let WEB_SOCKET_URL = "ws://localhost:8080/endpoint"
-    
     private var socket: WebSocket
     
-    init() {
-        let url = WebSocketConnection.WEB_SOCKET_URL
+    init(_ url: String) {
         var request = URLRequest(url: URL(string: url)!)
         request.timeoutInterval = 5
         self.socket = WebSocket(request: request)
@@ -163,6 +160,10 @@ struct Command: Codable {
     
     static func activate(identifier: String, activityData: String) -> Command {
         return Command(action: "activate", identifier: identifier, activityData: activityData)
+    }
+    
+    static func querySession(identifier: String, sessionId: String?) -> Command {
+        return Command(action: "query_session", identifier: identifier, sessionId: sessionId)
     }
     
     static func joinSession(identifier: String, sessionId: String) -> Command {
