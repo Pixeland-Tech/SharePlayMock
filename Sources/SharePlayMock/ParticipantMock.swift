@@ -14,10 +14,12 @@ public class ParticipantMock : Hashable, Identifiable {
     public typealias ID = UUID
     
     public let id: UUID
+    public let raw: Participant?
     public var hashValue: Int { 0 }
     
-    init(id: UUID) {
+    public init(id: UUID, raw: Participant? = nil) {
         self.id = id
+        self.raw = raw
     }
     
     public func hash(into hasher: inout Hasher) {
@@ -37,6 +39,27 @@ public class ParticipantMock : Hashable, Identifiable {
     }
     
     static func pack(_ participant: Participant) -> ParticipantMock{
-        return ParticipantMock(id: participant.id)
+        return ParticipantMock(id: participant.id, raw: participant)
     }
+}
+
+extension ParticipantMock {
+    static func toRaw(_ participants: Participants) -> GroupActivities.Participants {
+        switch participants {
+        case.only(let set):
+            let arr = set.map { mock in
+                mock.raw!
+            }
+            return .only(Set(arr))
+        default:
+            return .all
+        }
+    }
+}
+
+public enum Participants {
+
+    case all
+
+    case only(Set<ParticipantMock>)
 }

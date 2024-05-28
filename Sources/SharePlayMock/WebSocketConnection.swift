@@ -133,7 +133,6 @@ struct WebSocketMessageCodec {
     }
     
     static func decode(_ jsonString: String) -> WebSocketMessage? {
-        print(jsonString)
         if let jsonData = jsonString.data(using: .utf8) {
             let decoder = JSONDecoder()
             
@@ -157,6 +156,7 @@ struct Command: Codable {
     var source: String?
     var messageTypeName: String?
     var messageValue: String?
+    var participantIds: [String]?
     
     static func activate(identifier: String, activityData: String) -> Command {
         return Command(action: "activate", identifier: identifier, activityData: activityData)
@@ -178,9 +178,9 @@ struct Command: Codable {
         return Command(action: "end_session", identifier: identifier, sessionId: sessionId)
     }
     
-    static func sendMessage(identifier: String, sessionId: String, source: String, messageTypeName: String, messageValue: String) -> Command {
+    static func sendMessage(identifier: String, sessionId: String, source: String, messageTypeName: String, messageValue: String, participantIds: [String]?) -> Command {
         return Command(action: "send_message", identifier: identifier, sessionId: sessionId, source: source,
-                       messageTypeName: messageTypeName, messageValue: messageValue)
+                       messageTypeName: messageTypeName, messageValue: messageValue, participantIds: participantIds)
     }
 }
 

@@ -26,17 +26,23 @@ public class GroupSessionMessengerMock {
     
     final public func send<Message>(_ value: Message, to participants: Participants = .all) async throws where Message : Decodable, Message : Encodable {
         if let mock = SharePlayMockManager.useMock() {
-            mock.sendMessage(value, activityIdentifier: activityIdentifier, sessionId: sessionId)
+            var participantIds: [String]? = nil
+            if case .only(let set) = participants {
+                participantIds = set.map({ mock in
+                    mock.id.uuidString
+                })
+            }
+            mock.sendMessage(value, activityIdentifier: activityIdentifier, sessionId: sessionId, participantIds: participantIds)
         } else {
             if let messenger = self.messenger {
-                try await messenger.send(value, to: participants)
+                try await messenger.send(value, to: ParticipantMock.toRaw(participants))
             }
         }
     }
     
     final public func send(_ value: Data, to participants: Participants = .all) async throws {
         if let messenger = self.messenger {
-            try await messenger.send(value, to: participants)
+            try await messenger.send(value, to: ParticipantMock.toRaw(participants))
         }
     }
     
@@ -194,14 +200,15 @@ struct MessageCodec {
 @available(iOS 15, macOS 12, tvOS 15, *)
 extension SharePlayMockManager {
 
-    func sendMessage<Message>(_ value: Message, activityIdentifier: String, sessionId: UUID) where Message: Codable {
+    func sendMessage<Message>(_ value: Message, activityIdentifier: String, sessionId: UUID, participantIds: [String]?) where Message: Codable {
         let messageTypeName = String(describing: Message.Type.self)
         let messageValue = MessageCodec.encode(value)
         let command = Command.sendMessage(identifier: activityIdentifier,
                                           sessionId: sessionId.uuidString,
                                           source: localParticipantId!.uuidString,
                                           messageTypeName: messageTypeName,
-                                          messageValue: messageValue)
+                                          messageValue: messageValue,
+                                          participantIds: participantIds)
         webSocket?.send(command)
     }
 }

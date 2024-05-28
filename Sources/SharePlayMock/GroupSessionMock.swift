@@ -31,6 +31,17 @@ final public class GroupSessionMock<M: GroupActivityMock> : ObservableObject {
     @Published final public internal(set) var activeParticipants: Set<ParticipantMock>
     private var activeParticipantsCancellable: AnyCancellable?
     
+    final public var localParticipant: ParticipantMock {
+        get {
+            if let mock = SharePlayMockManager.useMock() {
+                return ParticipantMock(id: mock.localParticipantId!)
+            }
+            else {
+                return ParticipantMock(id: groupSession!.localParticipant.id)
+            }
+        }
+    }
+    
     init(session: GroupSession<ActivityType>) {
         self.activity = session.activity
         self.groupSession = session
