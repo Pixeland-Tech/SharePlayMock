@@ -67,8 +67,12 @@ class MessageReceiverRegistry {
     static let instance = MessageReceiverRegistry()
     
     var map: [String: MessageReceiver] = [:]
+    private let lock = NSLock()
     
     func get<Message: Codable>(activityIdentifier: String, of type: Message.Type) -> GroupSessionMessengerMock.Messages<Message> {
+        lock.lock()
+        defer { lock.unlock() }
+        
         let typeName = String(describing: Message.Type.self)
         let key = activityIdentifier + "_" + typeName
         if !map.keys.contains(key) {
@@ -80,6 +84,9 @@ class MessageReceiverRegistry {
     }
     
     func get(activityIdentifier: String, of typeName: String) -> MessageReceiver? {
+        lock.lock()
+        defer { lock.unlock() }
+        
         let key = activityIdentifier + "_" + typeName
         return map[key]
     }
