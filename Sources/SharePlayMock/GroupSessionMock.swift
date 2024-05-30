@@ -31,6 +31,17 @@ final public class GroupSessionMock<M: GroupActivityMock> : ObservableObject {
     @Published final public internal(set) var activeParticipants: Set<ParticipantMock>
     private var activeParticipantsCancellable: AnyCancellable?
     
+    final public var systemCoordinator: SystemCoordinator? {
+        get async {
+            if let mock = SharePlayMockManager.useMock() {
+                return nil
+            }
+            else {
+                return await groupSession?.systemCoordinator
+            }
+        }
+    }
+    
     final public var localParticipant: ParticipantMock {
         get {
             if let mock = SharePlayMockManager.useMock() {
