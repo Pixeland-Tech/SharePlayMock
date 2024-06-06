@@ -12,6 +12,7 @@ import Starscream
 class WebSocketConnection: WebSocketDelegate {
     
     private var socket: WebSocket
+    private var connected: Bool = false
     
     init(_ url: String) {
         var request = URLRequest(url: URL(string: url)!)
@@ -24,9 +25,20 @@ class WebSocketConnection: WebSocketDelegate {
         socket.connect()
     }
     
+    func waitReady() async {
+        while !connected {
+            do {
+                try await Task.sleep(nanoseconds: 1_00_000_000)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
     public func didReceive(event: Starscream.WebSocketEvent, client: any Starscream.WebSocketClient) {
         switch event {
         case .connected:
+            connected = true
             Logging.info("websocket connected")
             break
         case .text(let string):
