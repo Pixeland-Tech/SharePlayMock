@@ -19,7 +19,6 @@ final public class GroupStateObserverMock : ObservableObject {
     
     public init() {
         if let _ = SharePlayMockManager.useMock() {
-            print("11")
             self.isEligibleForGroupSession = true
         }
         else {
@@ -34,7 +33,6 @@ final public class GroupStateObserverMock : ObservableObject {
     }
     
     func setMock() {
-        print("1122")
         self.isEligibleForGroupSession = true
         self.cancellable = nil
     }
