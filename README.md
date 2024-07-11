@@ -75,7 +75,7 @@ This instruction assumes you already have a visionOS project and used GroupActiv
 
 For a more detailed tutorial, go [here](https://medium.com/@xinyichen0321/the-easiest-way-to-test-shareplay-on-visionos-apps-7bf8a1753d8e).
 
-1. Download SharePlay Mock server
+1. Download SharePlay Mock server (**We're working on a P2P version so you don't have to run a local server to do local testing**)
    1. Brew install java <br>
        ```
        brew install openjdk@17
