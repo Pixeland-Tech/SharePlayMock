@@ -81,7 +81,7 @@ For a more detailed tutorial, go [here](https://medium.com/@xinyichen0321/the-ea
        brew install openjdk@17
        ```
    2. Download SharePlayMock Server jar file <br>
-     [https://github.com/Pixeland-Tech/SharePlayMock/releases/tag/placeholder-tag-1.0.0](https://github.com/Pixeland-Tech/SharePlayMock/releases/tag/placeholder-tag-1.0.0) <br><br>
+     [https://github.com/Pixeland-Tech/SharePlayMock/releases/tag/placeholder-tag-0.1.0](https://github.com/Pixeland-Tech/SharePlayMock/releases/tag/placeholder-tag-0.1.0) <br><br>
        > **Note:**
        > This repo does NOT include the source code of this jar file.
 2. Git clone SharePlay Mock client repo and import it to project
@@ -121,7 +121,7 @@ For a more detailed tutorial, go [here](https://medium.com/@xinyichen0321/the-ea
    1. Spin up websocket server
       Open a terminal and run
       ```
-      java -jar /<your_path_to_the_jar_file>/shareplay-mock-server-1.0.0.jar
+      java -jar /<your_path_to_the_jar_file>/shareplay-mock-server-0.1.0.jar
       ```
    2. Run your app on Simulator
    3. Connect your vision pro to Xcode and run your app on your vision pro.
