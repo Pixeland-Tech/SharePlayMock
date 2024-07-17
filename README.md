@@ -84,11 +84,10 @@ For a more detailed tutorial, go [here](https://medium.com/@xinyichen0321/the-ea
      [https://github.com/Pixeland-Tech/SharePlayMock/releases/tag/placeholder-tag-0.1.0](https://github.com/Pixeland-Tech/SharePlayMock/releases/tag/placeholder-tag-0.1.0) <br><br>
        > **Note:**
        > This repo does NOT include the source code of this jar file.
-2. Git clone SharePlay Mock client repo and import it to project
-   1. Git clone this repo
-   2. Open your visionOS project in Xcode
-   3. Go to File -> Add Package Dependencies... -> Add Local -> Select SharePlayMock -> Add Package
-   4. Under "Add to Target", select your project, then click "Add Package"
+2. Add SharePlayMock package to project
+   1. Open your visionOS project in Xcode
+   2. Go to File -> Add Package Dependencies... -> Search or Enter Package URL -> Enter "[https://github.com/Pixeland-Tech/SharePlayMock](https://github.com/Pixeland-Tech/SharePlayMock)" -> Add Package
+   3. Under "Add to Target", select your project, then click "Add Package"
 3. Modify code
    1. Enable mock on App init
       ```
