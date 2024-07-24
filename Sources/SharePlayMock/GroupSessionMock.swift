@@ -153,8 +153,11 @@ extension GroupSessionMock {
             
             public func next() async -> GroupSessionMock<M>? {
                 if var iterator = self.iterator {
-                    let session = await iterator.next()
-                    return GroupSessionMock(session: session!)
+                    if let session = await iterator.next() {
+                        return GroupSessionMock(session: session)
+                    } else {
+                        return nil
+                    }
                 } else {
                     if let mock = SharePlayMockManager.useMock(),
                         let webSocket = mock.webSocket {
