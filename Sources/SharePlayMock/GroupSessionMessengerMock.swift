@@ -146,8 +146,11 @@ extension GroupSessionMessengerMock {
             
             public func next() async -> Messages<Message>.Element? {
                 if var iterator = self.iterator {
-                    let element = await iterator.next()!
-                    return (element.0, MockMessageContext(source: ParticipantMock.pack(element.1.source)))
+                    if let element = await iterator.next() {
+                        return (element.0, MockMessageContext(source: ParticipantMock.pack(element.1.source)))
+                    } else {
+                        return nil
+                    }
                 }
                 else {
                     while elements.isEmpty {
