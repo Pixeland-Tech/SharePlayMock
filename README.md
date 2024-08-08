@@ -69,6 +69,27 @@ On a high level, you use SharePlayMock by replacing various SharePlay identifier
          }
      }
      ```
+6. **SystemCoordinatorMock**
+     ```
+     if let systemCoordinator = await session.systemCoordinator { // systemCoordinator has type SystemCoordinatorMock
+       var configuration = SystemCoordinator.Configuration()
+       configuration.supportsGroupImmersiveSpace = true
+       configuration.spatialTemplatePreference = .conversational
+       systemCoordinator.configuration = configuration
+       
+       self.tasks.insert(
+          Task.detached { @MainActor in
+              for await immersionStyle in systemCoordinator.groupImmersionStyle {
+                  if let immersionStyle {
+                      await openImmersiveSpace(id: "ImmersiveSpace")
+                  } else {
+                      await dismissImmersiveSpace()
+                  }
+              }
+          }
+      )
+     }
+     ```
 
 ## Integration Instructions
 This instruction assumes you already have a visionOS project and used GroupActivities API and enabled SharePlay for your app/game.
@@ -116,7 +137,8 @@ For a more detailed tutorial, go [here](https://medium.com/@xinyichen0321/the-ea
    |GroupSessionMessenger|GroupSessionMessengerMock|
    |GroupStateObserver|GroupStateObserverMock|
    |Participant|ParticipantMock|
-4. Test code
+   |SystemCoordinator|SystemCoordinatorMock|
+5. Test code
    1. Spin up websocket server
       Open a terminal and run
       ```
