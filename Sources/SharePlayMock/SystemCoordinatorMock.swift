@@ -9,7 +9,11 @@ import GroupActivities
 import Spatial
 import SwiftUI
 
-@available(iOS 15, macOS 12, tvOS 15, *)
+@available(visionOS 1.0, *)
+@available(iOS, unavailable)
+@available(watchOS, unavailable)
+@available(tvOS, unavailable)
+@available(macOS, unavailable)
 public class SystemCoordinatorMock {
     
     var raw: SystemCoordinator?
