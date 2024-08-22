@@ -108,6 +108,13 @@ For a more detailed tutorial, go [here](https://medium.com/@xinyichen0321/the-ea
 2. Add SharePlayMock package to project
    1. Open your visionOS project in Xcode
    2. Go to File -> Add Package Dependencies... -> Search or Enter Package URL -> Enter "[https://github.com/Pixeland-Tech/SharePlayMock](https://github.com/Pixeland-Tech/SharePlayMock)" -> Add Package
+
+      <div style="border: 1px solid red; padding: 10px; background-color: #f8d7da; color: #721c24; border-radius: 5px;">
+        <strong>⚠️ Important:</strong>  
+        If you are using GroupActivities APIs that are only available in visionOS 2 beta, use branch "visionOS2.0-beta" instead of "master". You can specify which branch to use when adding package <br>
+        Go to File -> Add Package Dependencies... -> Search or Enter Package URL -> Enter "[https://github.com/Pixeland-Tech/SharePlayMock](https://github.com/Pixeland-Tech/SharePlayMock)" -> Dependency Rule -> Branch -> Enter "visionOS2.0-beta" -> Add Package
+      </div>
+
    3. Under "Add to Target", select your project, then click "Add Package"
 3. Modify code
    1. Enable mock on App init
