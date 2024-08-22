@@ -62,21 +62,6 @@ public class SystemCoordinatorMock {
     public init(raw: SystemCoordinator?) {
         self.raw = raw
     }
-    
-    @available(visionOS 2.0, *)
-    final public func assignRole(_ role: some SpatialTemplateRole) {
-        if (SharePlayMockManager.useMock() == nil) {
-            raw?.assignRole(role)
-        }
-    }
-
-    @available(visionOS 2.0, *)
-    final public func resignRole() {
-        if (SharePlayMockManager.useMock() == nil) {
-            raw?.resignRole()
-        }
-    }
-    
 }
 
 @available(visionOS 1.0, *)
@@ -153,33 +138,9 @@ extension SystemCoordinatorMock {
             }
         }
 
-        @available(visionOS 2.0, *)
-        public var seat: SystemCoordinatorMock.ParticipantState.Seat? {
-            get {
-                if SharePlayMockManager.useMock() != nil {
-                    return SystemCoordinatorMock.ParticipantState.Seat(raw: nil)
-                } else {
-                    return SystemCoordinatorMock.ParticipantState.Seat(raw: raw!.seat)
-                }
-            }
-        }
-
-        @available(visionOS 2.0, *)
-        public var role: (any SpatialTemplateRole)? {
-            if SharePlayMockManager.useMock() != nil {
-                return nil
-            } else {
-                return raw!.role
-            }
-        }
-
         public static func == (lhs: SystemCoordinatorMock.ParticipantState, rhs: SystemCoordinatorMock.ParticipantState) -> Bool {
             if SharePlayMockManager.useMock() != nil {
-                if #available(visionOS 2.0, *) {
-                    return lhs.isSpatial == rhs.isSpatial && lhs.seat == rhs.seat && lhs.role?.roleIdentifier == rhs.role?.roleIdentifier
-                } else {
-                    return lhs.isSpatial == rhs.isSpatial
-                }
+                return lhs.isSpatial == rhs.isSpatial
             } else {
                 return lhs.raw! == rhs.raw!
             }
@@ -222,61 +183,5 @@ extension SystemCoordinatorMock {
         @available(watchOS, unavailable, introduced: 6.0)
         @available(macOS, unavailable, introduced: 10.15)
         public typealias AsyncIterator = SystemCoordinatorMock.ParticipantStates.Iterator
-    }
-}
-
-@available(visionOS 2.0, *)
-@available(iOS, unavailable)
-@available(watchOS, unavailable)
-@available(tvOS, unavailable)
-@available(macOS, unavailable)
-extension SystemCoordinatorMock.ParticipantState {
-    public struct Seat : Hashable {
-        
-        var raw: SystemCoordinator.ParticipantState.Seat?
-
-        public var pose: Pose3D {
-            get {
-                if SharePlayMockManager.useMock() != nil {
-                    return Pose3D()
-                } else {
-                    return raw!.pose
-                }
-            }
-        }
-
-        public var role: (any SpatialTemplateRole)? {
-            get {
-                if SharePlayMockManager.useMock() != nil {
-                    return nil
-                } else {
-                    return raw!.role
-                }
-            }
-        }
-
-        public static func == (lhs: SystemCoordinatorMock.ParticipantState.Seat, rhs: SystemCoordinatorMock.ParticipantState.Seat) -> Bool {
-            if SharePlayMockManager.useMock() != nil {
-                return lhs.pose == rhs.pose && lhs.role?.roleIdentifier == rhs.role?.roleIdentifier
-            } else {
-                return lhs.raw! == rhs.raw!
-            }
-        }
-
-        public func hash(into hasher: inout Hasher) {
-            if (SharePlayMockManager.useMock() == nil) {
-                raw!.hash(into: &hasher)
-            }
-        }
-
-        public var hashValue: Int {
-            get {
-                if SharePlayMockManager.useMock() != nil {
-                    return 0
-                } else {
-                    return raw!.hashValue
-                }
-            }
-        }
     }
 }
