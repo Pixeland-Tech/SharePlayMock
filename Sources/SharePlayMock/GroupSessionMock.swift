@@ -144,11 +144,25 @@ extension GroupSessionMock {
 
         public class Iterator : AsyncIteratorProtocol {
             var iterator: GroupSession<ActivityType>.Sessions.Iterator?
-            private var elements : [Element] = []
+            private var stream: AsyncStream<Element>?
+            private var streamIterator: AsyncStream<Element>.Iterator?
+            private var submitHandler: ((_ element: Element) -> Void)?
+            private var stopHandler: (() -> Void)?
             var current: Element?
             
             init(_ iterator: GroupSession<ActivityType>.Sessions.Iterator?) {
                 self.iterator = iterator
+                if iterator == nil {
+                    stream = AsyncStream<Element> {continuation in
+                        submitHandler = { task in
+                            continuation.yield(task)
+                        }
+                        stopHandler = {
+                            continuation.finish()
+                        }
+                    }
+                    streamIterator = stream?.makeAsyncIterator()
+                }
             }
             
             public func next() async -> GroupSessionMock<M>? {
@@ -169,20 +183,17 @@ extension GroupSessionMock {
                         webSocket.send(command)
                     }
                     
-                    while elements.isEmpty {
-                        do {
-                            try await Task.sleep(nanoseconds: 1_00_000_000)
-                        } catch {
-                            print(error)
-                        }
+                    if let session = await streamIterator?.next() {
+                        return session
                     }
-                    return elements.removeFirst()
                 }
+                
+                return nil
             }
             
             func add(_ element: Element) {
                 self.current = element
-                self.elements.append(element)
+                submitHandler?(element)
             }
 
             public typealias Element = GroupSessionMock<M>

@@ -136,12 +136,25 @@ extension GroupSessionMessengerMock {
         }
 
         public class Iterator : AsyncIteratorProtocol {
-            
             var iterator: GroupSessionMessenger.Messages<Message>.Iterator?
-            private var elements : [Element] = []
+            private var stream: AsyncStream<Element>?
+            private var streamIterator: AsyncStream<Element>.Iterator?
+            private var submitHandler: ((_ element: Element) -> Void)?
+            private var stopHandler: (() -> Void)?
             
             init(_ iterator: GroupSessionMessenger.Messages<Message>.Iterator? = nil) {
                 self.iterator = iterator
+                if iterator == nil {
+                    stream = AsyncStream<Element> {continuation in
+                        submitHandler = { task in
+                            continuation.yield(task)
+                        }
+                        stopHandler = {
+                            continuation.finish()
+                        }
+                    }
+                    streamIterator = stream?.makeAsyncIterator()
+                }
             }
             
             public func next() async -> Messages<Message>.Element? {
@@ -152,20 +165,15 @@ extension GroupSessionMessengerMock {
                         return nil
                     }
                 }
-                else {
-                    while elements.isEmpty {
-                        do {
-                            try await Task.sleep(nanoseconds: 1_00_000_000)
-                        } catch {
-                            print(error)
-                        }
-                    }
-                    return elements.removeFirst()
+                else if let element = await streamIterator?.next() {
+                    return element
                 }
+                
+                return nil
             }
             
             func add(_ element: Element) {
-                self.elements.append(element)
+                submitHandler?(element)
             }
 
             public typealias Element = Messages<Message>.Element
