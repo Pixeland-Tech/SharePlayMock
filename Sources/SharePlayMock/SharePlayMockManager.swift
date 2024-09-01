@@ -32,6 +32,10 @@ public class SharePlayMockManager: ObservableObject {
         instance.setEnabled(webSocketUrl: webSocketUrl)
     }
     
+    public static func enabled() -> Bool {
+        instance.enabled
+    }
+    
     static func useMock() -> SharePlayMockManager? {
         if instance.enabled {
             return instance
