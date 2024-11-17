@@ -21,7 +21,7 @@ final public class GroupSessionMock<M: GroupActivityMock> : ObservableObject {
     }
     
     final public var activity: ActivityType
-    var groupSession: GroupSession<ActivityType>?
+    public var groupSession: GroupSession<ActivityType>?
     
     final public var id: UUID;
     
