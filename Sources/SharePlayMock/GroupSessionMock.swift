@@ -71,11 +71,14 @@ final public class GroupSessionMock<M: GroupActivityMock> : ObservableObject {
             }
     }
     
-    init(mockActivity: M, sessionId: UUID) {
+    public var isLocallyInitiated: Bool = false
+
+    init(mockActivity: M, sessionId: UUID, isLocallyInitiated: Bool = false) {
         self.activity = mockActivity.groupActivity
         self.id = sessionId
         self.state = .waiting
         self.activeParticipants = .init()
+        self.isLocallyInitiated = isLocallyInitiated
     }
     
     final public func join() {

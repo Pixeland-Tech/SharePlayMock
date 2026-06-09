@@ -15,12 +15,12 @@ public class GroupSessionMessengerMock {
     private var sessionId: UUID
     var messenger: GroupSessionMessenger?
     
-    public init<Activity>(session: GroupSessionMock<Activity>) where Activity : GroupActivityMock {
+    public init<Activity>(session: GroupSessionMock<Activity>, deliveryMode: GroupSessionMessenger.DeliveryMode = .reliable) where Activity : GroupActivityMock {
         self.activityIdentifier = Activity.ActivityType.activityIdentifier
         self.sessionId = session.id
-        
+
         if let session = session.groupSession {
-            self.messenger = GroupSessionMessenger(session: session)
+            self.messenger = GroupSessionMessenger(session: session, deliveryMode: deliveryMode)
         }
     }
     
@@ -72,15 +72,15 @@ class MessageReceiverRegistry {
     func get<Message: Codable>(activityIdentifier: String, of type: Message.Type) -> GroupSessionMessengerMock.Messages<Message> {
         lock.lock()
         defer { lock.unlock() }
-        
+
         let typeName = String(describing: Message.Type.self)
         let key = activityIdentifier + "_" + typeName
-        if !map.keys.contains(key) {
-            let messages = GroupSessionMessengerMock.Messages<Message>()
-            map[key] = messages
-        }
-        
-        return map[key] as! GroupSessionMessengerMock.Messages<Message>
+        // Always create a new Messages for each session so the AsyncStream.Iterator
+        // is fresh. A cancelled iterator permanently returns nil, which would cause
+        // a second session's observer task to exit immediately and drop all messages.
+        let messages = GroupSessionMessengerMock.Messages<Message>()
+        map[key] = messages
+        return messages
     }
     
     func get(activityIdentifier: String, of typeName: String) -> MessageReceiver? {

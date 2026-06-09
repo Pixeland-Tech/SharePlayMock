@@ -23,6 +23,7 @@ public class SharePlayMockManager: ObservableObject {
     var groupSessions: [String : Any] = [:]
     
     var webSocket: WebSocketConnection?
+    var locallyActivatedIdentifiers: Set<String> = []
     
     public static func getInstance() -> SharePlayMockManager {
         return instance

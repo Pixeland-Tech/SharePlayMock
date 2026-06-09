@@ -1,10 +1,10 @@
 {
-  "originHash" : "0236c366789ffa39e333f2c8d88d6a3cebffcdd332b1f4896d195a320208258d",
+  "originHash" : "8d153ee10fd876acb70736c5183499b9e4d990436fd72abf76fb95dc57d1585c",
   "pins" : [
     {
       "identity" : "starscream",
       "kind" : "remoteSourceControl",
-      "location" : "https://gitee.com/nikopeng/Starscream",
+      "location" : "https://github.com/daltoniam/Starscream.git",
       "state" : {
         "revision" : "c6bfd1af48efcc9a9ad203665db12375ba6b145a",
         "version" : "4.0.8"

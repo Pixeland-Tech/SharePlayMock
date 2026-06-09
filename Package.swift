@@ -18,7 +18,7 @@ let package = Package(
     ],
     dependencies: [
         .package(
-            url: "https://gitee.com/nikopeng/Starscream",
+            url: "https://github.com/daltoniam/Starscream.git",
             from: "4.0.8")
     ],
     targets: [
